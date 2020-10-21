@@ -1,0 +1,36 @@
+img {
+  object-fit: contain;
+  background-color: black;
+}
+
+.eyecatch {
+  height: 100vh;
+  background-image: url('../image/idea.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  background-color: black;
+}
+
+.catch-copy {
+  color: white;
+  font-size: 64px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+}
+
+.profile-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+}
+
+.user-name {
+  font-size: 24px;
+  font-weight: bold;
+}
