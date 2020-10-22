@@ -2,9 +2,10 @@
 
 @section('content')
 
-{{-- レシピ作成 --}}
+{{-- プロフィール編集 --}}
 <div class="container my-5">
   <h2 class="text-center mb-5">プロフィール編集</h2>
+  <a href="{{ url()->previous() }}">＜もどる</a>
 
   @if ($errors->any())
   <div class="alert alert-danger">
@@ -16,7 +17,7 @@
   </div>
   @endif
 
-  <form action="{{ route('update') }}" method="POST" enctype="multipart/form-data">
+  <form action="{{ route('update', ['id' => $user->id]) }}" method="POST" enctype="multipart/form-data">
     @method('PUT')
     @csrf
 

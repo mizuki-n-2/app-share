@@ -145,6 +145,9 @@ return [
     'title' => 'タイトル',
     'content' => '内容',
     'image' => '画像',
+    'name' => 'ユーザー名',
+    'profile' => 'プロフィール',
+    'comment' => 'コメント'
   ],
 
 ];

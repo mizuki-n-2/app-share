@@ -3,31 +3,40 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\User;
 
 class ProfileController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        $user = Auth::user();
-        $posts = Post::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(6);
-
-        $favorite_posts = Post::select('posts.*')->join('likes', 'likes.post_id', '=', 'posts.id')->where('likes.user_id', $user->id)->orderBy('likes.created_at', 'desc')->paginate(6);
-        
-        return view('profile', ['posts' => $posts, 'user' => $user, 'favorite_posts' => $favorite_posts]);
+        $this->middleware('auth')->except('index');
     }
 
-    public function edit() 
+    public function index($id)
     {
-        $user = Auth::user();
+        $user = User::where('id', $id)->first();
+        $posts = Post::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(6);
+
+        $favorite_posts = Post::select('posts.*')->join('likes', 'likes.post_id', '=', 'posts.id')->where('likes.user_id', $id)->orderBy('likes.created_at', 'desc')->paginate(6);
+
+        return view('profile', ['user' => $user, 'posts' => $posts, 'favorite_posts' => $favorite_posts]);
+
+    }
+
+    public function edit($id) 
+    {
+        $user = User::where('id', $id)->first();
         return view('edit', ['user' => $user]);
     }
 
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
-        $id = Auth::id();
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'image' => 'nullable|file|image',
+            'profile' => 'nullable'
+        ]);
 
         $image = $request->file('image');
 
@@ -42,6 +51,6 @@ class ProfileController extends Controller
             'profile' => $request->profile
         ]);
 
-        return redirect('profile');
+        return redirect()->route('profile', ['id' => $id]);
     }
 }

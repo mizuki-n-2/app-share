@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
@@ -22,13 +23,13 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::resource('posts', 'App\Http\Controllers\PostController')->except([
-  'index', 'edit', 'update'
-]);;
+Route::resource('posts', 'App\Http\Controllers\PostController')->except('index');
 
-Route::get('profile', [ProfileController::class, 'index'])->name('profile');
-Route::get('profile/edit', [ProfileController::class, 'edit'])->name('edit');
-Route::put('profile/update', [ProfileController::class, 'update'])->name('update');
+Route::post('comment/{id}', [CommentController::class, 'store'])->name('comment.store');
+
+Route::get('profile/{id}', [ProfileController::class, 'index'])->name('profile');
+Route::get('profile/edit/{id}', [ProfileController::class, 'edit'])->name('edit');
+Route::put('profile/update/{id}', [ProfileController::class, 'update'])->name('update');
 
 Route::get('posts/like/{id}', [LikeController::class, 'like'])->name('like');
 Route::get('posts/unlike/{id}', [LikeController::class, 'unlike'])->name('unlike');

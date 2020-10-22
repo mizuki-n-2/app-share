@@ -12,6 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/main.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -61,7 +62,7 @@
                             <a class="nav-link" href="{{ route('posts.create') }}">アプリを投稿する</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('profile') }}">マイページ</a>
+                            <a class="nav-link" href="{{ route('profile', ['id' => Auth::id()]) }}">マイページ</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -90,6 +91,7 @@
             @yield('content')
         </main>
     </div>
+
 </body>
 
 </html>

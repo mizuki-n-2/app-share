@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Comment;
 
 class PostController extends Controller
 {
@@ -76,7 +77,8 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::where('id',$id)->first();
-        return view('show',['post' => $post]);
+        $comments = Comment::where('post_id', $id)->get();
+        return view('show',['post' => $post, 'comments' => $comments]);
     }
 
     /**
@@ -87,7 +89,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::where('id', $id)->first();
+        return view('post_edit', ['post' => $post]);
     }
 
     /**
@@ -99,7 +102,29 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'image' => 'nullable|file|image',
+            'url' => 'nullable',
+            'content' => 'required',
+        ]);
+
+        $image = $request->file('image');
+
+        if ($image !== null) {
+            $path = $image->store('public/image');
+            $image = basename($path);
+        }
+
+        Post::where('id', $id)->update([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'image' => $image,
+            'url' => $request->url,
+            'content' => $request->content,
+        ]);
+
+        return redirect()->route('posts.show', ['post' => $id]);
     }
 
     /**

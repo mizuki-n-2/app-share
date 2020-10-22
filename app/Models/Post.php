@@ -28,6 +28,11 @@ class Post extends Model
         return $this->hasMany('App\Models\Like');
     }
 
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
     public function is_liked_by_auth_user()
     {
         $id = Auth::id();

@@ -2,38 +2,125 @@
 
 @section('content')
 
-{{-- 投稿作成 --}}
-<div class="container my-5">
-  
+{{-- 投稿詳細 --}}
+<div class="container">
+
   <div class="row">
-    <div class="col-10 mx-auto">
-      <a href="{{ url()->previous() }}">＜もどる</a>
-      <h2 class="font-weight-bold text-center">{{ $post->title }}</h2>
-    </div>
-        
-    <div class="col-10 mx-auto mt-5">
-      <h4>内容</h4>
-      <p>{!! nl2br(e($post->content)) !!}</p>
-    </div>
-    <div class="col-10 mx-auto">
-      <h4>URL</h4>
-      @if ($post->url !== null)
-      <p><a href="{{ $post->url }}">{{ $post->url }}</a></p>     
-      @else
-      <p>URLはありません</p>
-      @endif
-    </div>
-    <div class="col-10 mx-auto mt-3">
-      <p>投稿者：<a href="">{{ $post->user->name }}</a></p>
-      <p>投稿日：{{ $post->created_at->format('Y/m/d') }}</p>
-    </div>
+
     @if ($post->image !== null)
     <div class="col-10 mx-auto">
-      <img src="{{ asset('/storage/image/'.$post->image) }}" width="100%">
+      <img src="{{ asset('/storage/image/'.$post->image) }}" class="show-img">
     </div>
     @endif
 
-  </div> 
+    <div class="col-10 mx-auto my-3">
+      <h2 class="font-weight-bold text-center">{{ $post->title }}</h2>
+    </div>
+
+    <div class="col-10 mx-auto">
+      <h5>○内容</h5>
+      <p class="ml-4">{!! nl2br(e($post->content)) !!}</p>
+    </div>
+
+    <div class="col-10 mx-auto">
+      <h5>○URL</h5>
+      @if ($post->url !== null)
+      <p class="ml-4"><a href="{{ $post->url }}">{{ $post->url }}</a></p>
+      @else
+      <p class="ml-4">URLはありません</p>
+      @endif
+    </div>
+
+    <div class="col-10 mx-auto mt-3">
+      <p>投稿者：<a href="{{ route('profile', ['id' => $post->user_id]) }}">{{ $post->user->name }}</a></p>
+      <p>投稿日：{{ $post->created_at->format('Y/m/d') }}</p>
+    </div>
+
+    <div class="col-10 mx-auto my-3 d-flex justify-content-end">
+      {{-- <a href="{{ url()->previous() }}">＜もどる</a> --}}
+      <div>
+        {{-- 編集 --}}
+        @if ($post->user_id === Auth::id())
+        <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary"><i class="fas fa-edit"></i> 編集</a>
+        @endif
+
+        {{-- いいね --}}
+        @if ($post->is_liked_by_auth_user())
+        <a href="{{ route('unlike', ['id' => $post->id]) }}" class="btn btn-success"><i class="far fa-thumbs-up"></i>
+          いいね！
+          <span>{{ $post->likes->count() }}</span></a>
+        @else
+        <a href="{{ route('like', ['id' => $post->id]) }}" class="btn btn-secondary"><i class="far fa-thumbs-up"></i>
+          いいね！
+          <span>{{ $post->likes->count() }}</span></a>
+        @endif
+
+        {{-- コメント --}}
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter">
+          コメントする
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">コメント作成</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <form action="{{ route('comment.store', ['id' => $post->id]) }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                  <textarea class="form-control" name="comment"></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">コメントする</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if ($errors->any())
+    <div class="alert alert-danger mx-auto mt-3 validation-msg">
+      <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+    @endif
+    {{-- コメント一覧 --}}
+    <div class="col-10 mx-auto my-3">
+      <div class="card">
+        <div class="card-header text-center">
+          コメント <span>{{ $comments->count() }}</span>
+        </div>
+        <ul class="list-group list-group-flush">
+          @if ($comments->count() === 0)
+          <li class="list-group-item">
+            <p class="text-center mt-3">コメントはありません</p>
+          </li>
+          @else
+          @foreach ($comments as $comment)
+          <li class="list-group-item">
+            <a href="{{ route('profile', ['id' => $comment->user_id]) }}">{{ $comment->user->name }}</a>
+            <p class="ml-4">{{ $comment->comment }}</p>
+          </li>
+          @endforeach
+          @endif
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
 @endsection

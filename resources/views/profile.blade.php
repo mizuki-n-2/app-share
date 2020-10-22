@@ -14,7 +14,9 @@
     <div class="col-5">
       <p class="user-name">{{ $user->name }}</p>
       <p>{!! nl2br(e($user->profile)) !!}</p>
-      <a href="{{ route('edit') }}">プロフィール編集</a>
+      @if ($user->id === Auth::id())
+      <a href="{{ route('edit', ['id' => $user->id]) }}"><i class="fas fa-user-edit"></i> プロフィール編集</a>
+      @endif
     </div>
   </div>
 
@@ -30,6 +32,7 @@
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
+
     {{-- 投稿一覧 --}}
     <div class="tab-pane fade show active" id="post" role="tabpanel" aria-labelledby="post-tab">
       <div class="container">
@@ -37,7 +40,9 @@
           @if ($posts->count() === 0)
           <div class="col-12 mx-auto mt-5 text-center">
             <p class="mb-5">投稿したアプリはありません</p>
+            @if ($user->id === Auth::id())
             <a href="{{ route('posts.create') }}" class="btn btn-primary btn-lg">アプリを投稿する</a>
+            @endif
           </div>
           @endif
 
@@ -53,19 +58,28 @@
               <div class="card-body">
                 <h5 class="card-title">{{ $post->title }}</h5>
                 <div class="d-flex justify-content-between">
+
                   <a href="{{ route('posts.show',['post' => $post->id]) }}" class="btn btn-primary">詳細へ</a>
+
+                  {{-- いいね --}}
                   @if ($post->is_liked_by_auth_user())
-                  <a href="{{ route('unlike', ['id' => $post->id]) }}" class="btn btn-success"><i class="far fa-thumbs-up"></i> いいね！
+                  <a href="{{ route('unlike', ['id' => $post->id]) }}" class="btn btn-success"><i
+                      class="far fa-thumbs-up"></i> いいね！
                     <span>{{ $post->likes->count() }}</span></a>
                   @else
-                  <a href="{{ route('like', ['id' => $post->id]) }}" class="btn btn-danger"><i class="far fa-thumbs-up"></i> いいね！
+                  <a href="{{ route('like', ['id' => $post->id]) }}" class="btn btn-secondary"><i
+                      class="far fa-thumbs-up"></i> いいね！
                     <span>{{ $post->likes->count() }}</span></a>
                   @endif
+
+                  @if ($user->id == Auth::id())
                   <form action="{{ route('posts.destroy',['post' => $post->id]) }}" method="POST">
                     @method('DELETE')
                     @csrf
-                    <button type="submit" class="btn btn-danger">削除</button>
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> 削除</button>
                   </form>
+                  @endif
+
                 </div>
               </div>
             </div>
@@ -83,7 +97,6 @@
           @if ($favorite_posts->count() === 0)
           <div class="col-12 mx-auto mt-5 text-center">
             <p class="mb-5">いいねした投稿はありません</p>
-            <a href="{{ route('posts.create') }}" class="btn btn-primary btn-lg">アプリを投稿する</a>
           </div>
           @endif
 
@@ -101,17 +114,23 @@
                 <div class="d-flex justify-content-between">
                   <a href="{{ route('posts.show',['post' => $favorite_post->id]) }}" class="btn btn-primary">詳細へ</a>
                   @if ($favorite_post->is_liked_by_auth_user())
-                  <a href="{{ route('unlike', ['id' => $favorite_post->id]) }}" class="btn btn-success"><i class="far fa-thumbs-up"></i> いいね！
+                  <a href="{{ route('unlike', ['id' => $favorite_post->id]) }}" class="btn btn-success"><i
+                      class="far fa-thumbs-up"></i> いいね！
                     <span>{{ $favorite_post->likes->count() }}</span></a>
                   @else
-                  <a href="{{ route('like', ['id' => $favorite_post->id]) }}" class="btn btn-danger"><i class="far fa-thumbs-up"></i> いいね！
+                  <a href="{{ route('like', ['id' => $favorite_post->id]) }}" class="btn btn-secondary"><i
+                      class="far fa-thumbs-up"></i> いいね！
                     <span>{{ $favorite_post->likes->count() }}</span></a>
                   @endif
+
+                  @if ($favorite_post->user_id === Auth::id())
                   <form action="{{ route('posts.destroy',['post' => $favorite_post->id]) }}" method="POST">
                     @method('DELETE')
                     @csrf
-                    <button type="submit" class="btn btn-danger">削除</button>
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> 削除</button>
                   </form>
+                  @endif
+
                 </div>
               </div>
             </div>
