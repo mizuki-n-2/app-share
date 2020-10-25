@@ -20,7 +20,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::orderBy('created_at', 'desc')->paginate(6);
+        return view('post.index', ['posts' => $posts]);
     }
 
     /**
@@ -30,7 +31,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('create');
+        return view('post.create');
     }
 
     /**
@@ -42,10 +43,10 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
+            'title' => 'required|max:255',
             'image' => 'nullable|file|image',
-            'url' => 'nullable',
-            'content' => 'required',
+            'url' => 'nullable|url',
+            'content' => 'required|max:255',
         ]);
 
         $id = Auth::id();
@@ -65,7 +66,7 @@ class PostController extends Controller
             'content' => $request->content,
         ]);
 
-        return redirect('/');
+        return redirect('/posts');
     }
 
     /**
@@ -76,9 +77,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::where('id',$id)->first();
+        $post = Post::where('id', $id)->first();
         $comments = Comment::where('post_id', $id)->get();
-        return view('show',['post' => $post, 'comments' => $comments]);
+        return view('post.show', ['post' => $post, 'comments' => $comments]);
     }
 
     /**
@@ -90,7 +91,7 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::where('id', $id)->first();
-        return view('post_edit', ['post' => $post]);
+        return view('post.edit', ['post' => $post]);
     }
 
     /**
@@ -103,10 +104,10 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
+            'title' => 'required|max:255',
             'image' => 'nullable|file|image',
-            'url' => 'nullable',
-            'content' => 'required',
+            'url' => 'nullable|url',
+            'content' => 'required|max:255',
         ]);
 
         $image = $request->file('image');
@@ -135,7 +136,14 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        Post::where('id',$id)->delete();
+        $post = Post::where('id', $id)->first();
+        $post->delete();
+        if ($post->likes !== null) {
+            $post->likes()->delete();
+        }
+        if ($post->comments !== null) {
+            $post->comments()->delete();
+        }
         return redirect()->back();
     }
 }

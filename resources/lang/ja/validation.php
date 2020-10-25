@@ -147,7 +147,8 @@ return [
     'image' => '画像',
     'name' => 'ユーザー名',
     'profile' => 'プロフィール',
-    'comment' => 'コメント'
+    'comment' => 'コメント',
+    'url' => 'URL',
   ],
 
 ];

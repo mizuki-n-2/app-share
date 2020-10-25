@@ -18,6 +18,7 @@ class Post extends Model
         'create_at', 'update_at'
     ];
 
+    // relation
     public function user()
     {
         return $this->belongsTo('App\Models\User');
@@ -33,6 +34,7 @@ class Post extends Model
         return $this->hasMany('App\Models\Comment');
     }
 
+    // like 判定
     public function is_liked_by_auth_user()
     {
         $id = Auth::id();

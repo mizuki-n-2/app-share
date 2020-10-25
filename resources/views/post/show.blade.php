@@ -37,7 +37,6 @@
     </div>
 
     <div class="col-10 mx-auto my-3 d-flex justify-content-end">
-      {{-- <a href="{{ url()->previous() }}">＜もどる</a> --}}
       <div>
         {{-- 編集 --}}
         @if ($post->user_id === Auth::id())
@@ -76,7 +75,7 @@
               <form action="{{ route('comment.store', ['id' => $post->id]) }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                  <textarea class="form-control" name="comment"></textarea>
+                  <textarea class="form-control" name="comment" required></textarea>
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">コメントする</button>

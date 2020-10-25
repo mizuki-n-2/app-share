@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FollowController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -23,7 +25,7 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::resource('posts', 'App\Http\Controllers\PostController')->except('index');
+Route::resource('posts', 'App\Http\Controllers\PostController');
 
 Route::post('comment/{id}', [CommentController::class, 'store'])->name('comment.store');
 
@@ -33,3 +35,8 @@ Route::put('profile/update/{id}', [ProfileController::class, 'update'])->name('u
 
 Route::get('posts/like/{id}', [LikeController::class, 'like'])->name('like');
 Route::get('posts/unlike/{id}', [LikeController::class, 'unlike'])->name('unlike');
+
+Route::get('follow/{id}', [FollowController::class, 'follow'])->name('follow');
+Route::get('unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
+
+Route::get('ajax', [NotificationController::class, 'getData']);

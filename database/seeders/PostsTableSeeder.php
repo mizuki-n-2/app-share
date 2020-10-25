@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,10 +15,15 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('posts')->insert([
-            'user_id' => 1,
-            'title' => 'アプリ',
-            'content' => 'テキストテキストテキスト',
-        ]);
+        $now = Carbon::now();
+
+        for($i = 1; $i <= 3; $i++) {
+            DB::table('posts')->insert([
+                'user_id' => $i,
+                'title' => 'app'.$i,
+                'content' => 'app'.$i.'です',
+                'created_at' => $now
+            ]);
+        }
     }
 }

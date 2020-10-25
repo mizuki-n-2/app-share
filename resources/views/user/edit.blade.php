@@ -5,7 +5,6 @@
 {{-- プロフィール編集 --}}
 <div class="container my-5">
   <h2 class="text-center mb-5">プロフィール編集</h2>
-  <a href="{{ url()->previous() }}">＜もどる</a>
 
   @if ($errors->any())
   <div class="alert alert-danger">
@@ -22,12 +21,12 @@
     @csrf
 
     <div class="form-group">
-      <label for="name" class="font-weight-bold">ユーザー名 <span class="text-white bg-danger">必須</span></label>
-      <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
+      <label for="name" class="font-weight-bold">ユーザー名</label>
+      <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}" required>
     </div>
 
     <div class="form-group">
-      <label for="image" class="font-weight-bold">プロフィール画像</label>
+      <label for="image" class="font-weight-bold">プロフィール画像 <span class="text-danger">※2MBまで</span></label>
       <input type="file" class="form-control-file" id="image" name="image">
     </div>
 

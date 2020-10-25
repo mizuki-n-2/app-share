@@ -2,51 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Like;
-use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Follow;
 use App\Models\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class LikeController extends Controller
+class FollowController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function like($id)
+    public function follow($id)
     {
-        Like::create([
+        Follow::create([
             'user_id' => Auth::id(),
-            'post_id' => $id 
+            'follow_id' => $id
         ]);
-
-        $post_user_id = Post::find($id)->user->id;
-        $like_post_title = Post::find($id)->title;
 
         $now = Carbon::now();
         $date_time = date('n/j G:i', strtotime($now));
 
         Notification::create([
-            'user_id' => $post_user_id,
-            'like_post_title' => $like_post_title,
+            'user_id' => $id,
             'by_user_name' => Auth::user()->name,
-            'date_time' => $date_time
+            'date_time' => $date_time,
         ]);
 
         return redirect()->back();
     }
 
-    public function unlike($id)
+    public function unfollow($id)
     {
-        Like::where([
+        Follow::where([
             'user_id' => Auth::id(),
-            'post_id' => $id
+            'follow_id' => $id
         ])->delete();
 
         return redirect()->back();
     }
 }
-
