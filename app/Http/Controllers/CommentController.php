@@ -41,6 +41,8 @@ class CommentController extends Controller
             'date_time' => $date_time
         ]);
 
+        session()->flash('flash_message', 'コメントしました');
+
         return redirect()->back();
     }
 }

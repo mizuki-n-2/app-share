@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\EditImageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
@@ -38,5 +39,8 @@ Route::get('posts/unlike/{id}', [LikeController::class, 'unlike'])->name('unlike
 
 Route::get('follow/{id}', [FollowController::class, 'follow'])->name('follow');
 Route::get('unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
+
+Route::get('notification/index/{id}', [NotificationController::class, 'index'])->name('notification.index');
+Route::delete('notification/delete/{id}', [NotificationController::class, 'delete'])->name('notification.delete');
 
 Route::get('ajax', [NotificationController::class, 'getData']);

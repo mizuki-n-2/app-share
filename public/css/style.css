@@ -49,3 +49,7 @@ img {
 .validation-msg {
   width: 80%;
 }
+
+#notification-icon {
+  color: black;
+}

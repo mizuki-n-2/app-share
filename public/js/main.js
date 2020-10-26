@@ -1,5 +1,11 @@
 $(function () {
+  
   get_data();
+
+  $('#default').on('click', function () {
+    $('#image').val(null);
+  });
+  
 });
 
 function get_data() {
@@ -9,9 +15,9 @@ function get_data() {
     success: data => {
       // console.log(data);
 
-      var count = data.notifications.length;
-
-      document.querySelector('#notification-count').textContent = count;
+      if (data.notifications.length !== 0) {
+        $('#notification-icon').css('color','#FFCC00');
+      }
     },
     error: () => {
       alert("ajax Error");

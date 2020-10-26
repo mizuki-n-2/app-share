@@ -12,15 +12,17 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    {{-- toastr --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
     {{-- fontawesome --}}
     <script src="https://kit.fontawesome.com/b9899ca194.js" crossorigin="anonymous"></script>
@@ -42,7 +44,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -88,6 +89,11 @@
                     </ul>
                 </div>
             </div>
+            @if(Auth::check())
+            <a href="{{ route('notification.index', ['id' => Auth::id()]) }}" id="notification-icon">
+                <i class="fas fa-bell" title="通知"></i>
+            </a>
+            @endif
         </nav>
 
         <main>
@@ -95,7 +101,22 @@
         </main>
     </div>
 
+    {{-- jQuery --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    {{-- toastr --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     @yield('js')
+
+    {{-- flash message --}}
+    <script>
+        @if (session('flash_message'))
+        $(function () {
+        toastr.success('{{ session('flash_message') }}');
+        });
+        @endif
+    </script>
 </body>
 
 </html>

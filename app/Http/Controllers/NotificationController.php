@@ -19,4 +19,16 @@ class NotificationController extends Controller
         $json = ['notifications' => $notifications];
         return response()->json($json);
     }
+
+    public function index($id) 
+    {
+        $notifications = Notification::where('user_id', $id)->orderBy('created_at', 'desc')->get();
+        return view('user.notification',['notifications' => $notifications]);
+    }
+
+    public function delete($id)
+    {
+        Notification::where('id', $id)->delete();
+        return redirect()->back();
+    }
 }

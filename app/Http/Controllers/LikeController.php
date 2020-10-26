@@ -36,6 +36,8 @@ class LikeController extends Controller
             'date_time' => $date_time
         ]);
 
+        session()->flash('flash_message', 'いいねしました');
+
         return redirect()->back();
     }
 
@@ -45,6 +47,8 @@ class LikeController extends Controller
             'user_id' => Auth::id(),
             'post_id' => $id
         ])->delete();
+
+        session()->flash('flash_message', 'いいねを削除しました');
 
         return redirect()->back();
     }

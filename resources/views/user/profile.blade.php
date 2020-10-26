@@ -45,13 +45,8 @@
       <a class="nav-link" id="follower-tab" data-toggle="tab" href="#follower" role="tab" aria-controls="follower"
         aria-selected="false">フォロワー <span>{{ count($followed_users) }}</span></a>
     </li>
-    @if ($user->id === Auth::id())
-    <li class="nav-item">
-      <a class="nav-link" id="notification-tab" data-toggle="tab" href="#notification" role="tab" aria-controls="notification"
-        aria-selected="false">通知 <span id="notification-count"></span></a>
-    </li>
-    @endif
   </ul>
+
   <div class="tab-content" id="myTabContent">
 
     {{-- 投稿一覧 --}}
@@ -284,44 +279,11 @@
   </div>
 </div>
 
-{{-- 通知 --}}
-<div class="tab-pane fade" id="notification" role="tabpanel" aria-labelledby="notification-tab">
-  <div class="container">
-    <div class="row">
-
-      {{-- 通知がなかった場合 --}}
-      @if (count($notifications) === 0)
-      <div class="col-12 mx-auto mt-5 text-center">
-        <p class="mb-5">通知はありません</p>
-      </div>
-      @endif
-
-      {{-- 通知があった場合 --}}
-      <div class="col-12">
-
-        {{-- カード --}}
-        @foreach ($notifications as $notification)
-        <div class="card">
-          <ul class="list-group list-group-flush">
-            @if ($notification->like_post_title === null && $notification->comment_post_title === null)
-            <li class="list-group-item">{{ $notification->by_user_name }}にフォローされました</li>
-            @elseif($notification->like_post_title !== null)
-            <li class="list-group-item">{{ $notification->by_user_name }}が{{ $notification->like_post_title }}にいいねしました</li>
-            @else
-            <li class="list-group-item">{{ $notification->by_user_name }}が{{ $notification->comment_post_title }}にコメントしました</li>
-            @endif
-          </ul>
-        </div>
-        @endforeach
-      </div>
-
-    </div>
-  </div>
 </div>
-</div>
+
 </div>
 @endsection
 
 @section('js')
-<script src="{{ asset('js/notification.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
 @endsection

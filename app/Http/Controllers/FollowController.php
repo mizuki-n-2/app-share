@@ -31,6 +31,8 @@ class FollowController extends Controller
             'date_time' => $date_time,
         ]);
 
+        session()->flash('flash_message', 'フォローしました');
+
         return redirect()->back();
     }
 
@@ -40,6 +42,8 @@ class FollowController extends Controller
             'user_id' => Auth::id(),
             'follow_id' => $id
         ])->delete();
+
+        session()->flash('flash_message', 'フォローを解除しました');
 
         return redirect()->back();
     }

@@ -66,6 +66,8 @@ class PostController extends Controller
             'content' => $request->content,
         ]);
 
+        session()->flash('flash_message', '投稿が完了しました');
+
         return redirect('/posts');
     }
 
@@ -108,22 +110,34 @@ class PostController extends Controller
             'image' => 'nullable|file|image',
             'url' => 'nullable|url',
             'content' => 'required|max:255',
+            'default' => 'nullable'
         ]);
 
-        $image = $request->file('image');
-
-        if ($image !== null) {
-            $path = $image->store('public/image');
-            $image = basename($path);
+        if ($request->default === 'checked') {
+            Post::where('id', $id)->update([
+                'user_id' => Auth::id(),
+                'title' => $request->title,
+                'url' => $request->url,
+                'content' => $request->content,
+            ]);
+        } else {
+            $image = $request->file('image');
+    
+            if ($image !== null) {
+                $path = $image->store('public/image');
+                $image = basename($path);
+            }
+    
+            Post::where('id', $id)->update([
+                'user_id' => Auth::id(),
+                'title' => $request->title,
+                'image' => $image,
+                'url' => $request->url,
+                'content' => $request->content,
+            ]);
         }
 
-        Post::where('id', $id)->update([
-            'user_id' => Auth::id(),
-            'title' => $request->title,
-            'image' => $image,
-            'url' => $request->url,
-            'content' => $request->content,
-        ]);
+        session()->flash('flash_message', '投稿の編集が完了しました');
 
         return redirect()->route('posts.show', ['post' => $id]);
     }
@@ -144,6 +158,9 @@ class PostController extends Controller
         if ($post->comments !== null) {
             $post->comments()->delete();
         }
+
+        session()->flash('flash_message', '投稿を削除しました');
+
         return redirect()->back();
     }
 }

@@ -54,9 +54,6 @@ class ProfileController extends Controller
             array_push($followed_users, $followed_user);
         }
 
-        // 通知
-        $notifications = Notification::where('user_id', $id)->orderBy('created_at', 'desc')->get();
-
         return view('user.profile', [
             'user' => $user,
             'posts' => $posts,
@@ -67,7 +64,6 @@ class ProfileController extends Controller
 
             'follow_users' => $follow_users,
             'followed_users' => $followed_users,
-            'notifications' => $notifications
         ]);
     }
 
@@ -82,22 +78,33 @@ class ProfileController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'image' => 'nullable|file|image',
-            'profile' => 'nullable|max:255'
+            'profile' => 'nullable|max:255',
+            'default' => 'nullable'
         ]);
 
-        $image = $request->file('image');
-
-        if ($image !== null) {
-            $path = $image->store('public/image');
-            $image = basename($path);
+        if ($request->default === 'checked') {
+            User::where('id', $id)->update([
+                'name' => $request->name,
+                'profile' => $request->profile
+            ]);
+        } else {
+            $image = $request->file('image');
+    
+            if ($image !== null) {
+                $path = $image->store('public/image');
+                $image = basename($path);
+            }
+    
+            User::where('id', $id)->update([
+                'name' => $request->name,
+                'image' => $image,
+                'profile' => $request->profile
+            ]);
         }
 
-        User::where('id', $id)->update([
-            'name' => $request->name,
-            'image' => $image,
-            'profile' => $request->profile
-        ]);
+        session()->flash('flash_message', 'プロフィールの編集が完了しました');
 
         return redirect()->route('profile', ['id' => $id]);
+
     }
 }

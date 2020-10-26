@@ -27,7 +27,14 @@
 
     <div class="form-group">
       <label for="image" class="font-weight-bold">プロフィール画像 <span class="text-danger">※2MBまで</span></label>
-      <input type="file" class="form-control-file" id="image" name="image">
+      <input type="file" class="form-control-file" name="image" id="image">
+    </div>
+
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" value="checked" id="default" name="default">
+      <label class="form-check-label text-primary" for="default">
+        プロフィール画像は変更しない
+      </label>
     </div>
 
     <div class="form-group">
@@ -41,4 +48,8 @@
 
 </div>
 
+@endsection
+
+@section('js')
+<script src="{{ asset('js/main.js') }}"></script>
 @endsection
