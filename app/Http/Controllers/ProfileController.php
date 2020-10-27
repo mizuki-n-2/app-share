@@ -22,14 +22,8 @@ class ProfileController extends Controller
         // ユーザー情報
         $user = User::where('id', $id)->first();
 
-        // paginationありの場合
-        // $posts = Post::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(6);
-
         // 投稿
         $posts = Post::where('user_id', $id)->orderBy('created_at', 'desc')->get();
-
-        // paginationありの場合
-        // $likes = Like::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(6);
 
         // いいねした投稿
         $likes = Like::where('user_id', $id)->orderBy('created_at', 'desc')->get();
@@ -58,10 +52,6 @@ class ProfileController extends Controller
             'user' => $user,
             'posts' => $posts,
             'like_posts' => $like_posts,
-
-            // paginationありの場合
-            // 'likes' => $likes
-
             'follow_users' => $follow_users,
             'followed_users' => $followed_users,
         ]);

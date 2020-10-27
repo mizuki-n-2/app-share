@@ -161,6 +161,6 @@ class PostController extends Controller
 
         session()->flash('flash_message', '投稿を削除しました');
 
-        return redirect()->back();
+        return redirect()->route('profile', ['id' => $post->user_id]);
     }
 }

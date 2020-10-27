@@ -13,8 +13,8 @@
     </div>
     @endif
     @foreach ($posts as $post)
-    <div class="col-4">
-      <div class="card my-5">
+    <div class="col-lg-4 col-md-6">
+      <div class="card my-4">
         @if ($post->image === null)
         <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
         @else
@@ -22,18 +22,24 @@
         @endif
         <div class="card-body">
           <h5 class="card-title">{{ $post->title }}</h5>
+          <div class="d-flex justify-content-between">
+            {{-- 詳細 --}}
+            <a href="{{ route('posts.show',['post' => $post->id]) }}" class="btn btn-outline-info">詳細へ</a>
+  
+            {{-- いいね --}}
+            @if ($post->is_liked_by_auth_user())
+            <a href="{{ route('unlike', ['id' => $post->id]) }}" class="btn btn-success">
+              <i class="far fa-thumbs-up"></i>
+              <span>{{ $post->likes->count() }}</span>
+            </a>
+            @else
+            <a href="{{ route('like', ['id' => $post->id]) }}" class="btn btn-secondary">
+              <i class="far fa-thumbs-up"></i>
+              <span>{{ $post->likes->count() }}</span>
+            </a>
+            @endif
+          </div>
 
-          {{-- 詳細 --}}
-          <a href="{{ route('posts.show',['post' => $post->id]) }}" class="btn btn-primary">詳細へ</a>
-
-          {{-- いいね --}}
-          @if ($post->is_liked_by_auth_user())
-          <a href="{{ route('unlike', ['id' => $post->id]) }}" class="btn btn-success"><i class="far fa-thumbs-up"></i>
-            いいね！ <span>{{ $post->likes->count() }}</span></a>
-          @else
-          <a href="{{ route('like', ['id' => $post->id]) }}" class="btn btn-secondary"><i class="far fa-thumbs-up"></i>
-            いいね！ <span>{{ $post->likes->count() }}</span></a>
-          @endif
         </div>
       </div>
     </div>

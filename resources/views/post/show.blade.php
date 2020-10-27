@@ -7,13 +7,16 @@
 
   <div class="row">
 
-    @if ($post->image !== null)
     <div class="col-10 mx-auto">
+      @if ($post->image !== null)
       <img src="{{ asset('/storage/image/'.$post->image) }}" class="show-img">
+      @else
+      <img src="/image/no-img.png" class="show-img">
+      @endif
     </div>
-    @endif
 
-    <div class="col-10 mx-auto my-3">
+
+    <div class="col-10 mx-auto my-4">
       <h2 class="font-weight-bold text-center">{{ $post->title }}</h2>
     </div>
 
@@ -36,28 +39,39 @@
       <p>投稿日：{{ $post->created_at->format('Y/m/d') }}</p>
     </div>
 
-    <div class="col-10 mx-auto my-3 d-flex justify-content-end">
-      <div>
+    <div class="col-10 mx-auto my-3">
+      <div class="d-flex justify-content-end">
         {{-- 編集 --}}
         @if ($post->user_id === Auth::id())
-        <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary"><i class="fas fa-edit"></i> 編集</a>
+        <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary">
+          <i class="fas fa-edit"></i>
+        </a>
+        @endif
+
+        {{-- 削除 --}}
+        @if ($post->user_id == Auth::id())
+        <form action="{{ route('posts.destroy',['post' => $post->id]) }}" method="POST">
+          @method('DELETE')
+          @csrf
+          <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </form>
         @endif
 
         {{-- いいね --}}
         @if ($post->is_liked_by_auth_user())
         <a href="{{ route('unlike', ['id' => $post->id]) }}" class="btn btn-success"><i class="far fa-thumbs-up"></i>
-          いいね！
           <span>{{ $post->likes->count() }}</span></a>
         @else
         <a href="{{ route('like', ['id' => $post->id]) }}" class="btn btn-secondary"><i class="far fa-thumbs-up"></i>
-          いいね！
           <span>{{ $post->likes->count() }}</span></a>
         @endif
 
         {{-- コメント --}}
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter">
-          コメントする
+          <i class="far fa-comment"></i>
         </button>
 
         <!-- Modal -->
@@ -111,8 +125,10 @@
           @else
           @foreach ($comments as $comment)
           <li class="list-group-item">
-            <a href="{{ route('profile', ['id' => $comment->user_id]) }}">{{ $comment->user->name }}</a>
-            <p class="ml-4">{{ $comment->comment }}</p>
+            <a href="{{ route('profile', ['id' => $comment->user_id]) }}">
+              {{ $comment->user->name }}
+            </a>
+            <p class="ml-4">{!! nl2br(e($comment->comment)) !!}</p>
           </li>
           @endforeach
           @endif
