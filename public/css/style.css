@@ -3,7 +3,7 @@ body {
 }
 
 img {
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .logo {
@@ -39,7 +39,6 @@ img {
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    background-color: white;
 }
 
 .follow-img {
