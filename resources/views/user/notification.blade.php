@@ -52,6 +52,17 @@
       @endforeach
     </div>
 
+    @if (count($notifications) !== 0)
+    <div class="col-12 text-center mt-5">
+      <form action="{{ route('notification.all_delete', ['id' => Auth::id()]) }}" method="POST">
+        @method('DELETE')
+        @csrf
+        <button type="submit" class="btn btn-outline-primary">全てOK</button>
+      </form>
+    </div>
+    @endif
+
+
   </div>
 </div>
 @endsection

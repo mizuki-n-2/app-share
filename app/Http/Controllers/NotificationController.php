@@ -31,4 +31,9 @@ class NotificationController extends Controller
         Notification::where('id', $id)->delete();
         return redirect()->back();
     }
+
+    public function all_delete($id) {
+        Notification::where('user_id', $id)->delete();
+        return redirect()->back();
+    }
 }

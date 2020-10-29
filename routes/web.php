@@ -42,5 +42,6 @@ Route::get('unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfoll
 
 Route::get('notification/index/{id}', [NotificationController::class, 'index'])->name('notification.index');
 Route::delete('notification/delete/{id}', [NotificationController::class, 'delete'])->name('notification.delete');
+Route::delete('notification/all_delete/{id}', [NotificationController::class, 'all_delete'])->name('notification.all_delete');
 
 Route::get('ajax', [NotificationController::class, 'getData']);
