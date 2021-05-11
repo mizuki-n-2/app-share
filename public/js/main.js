@@ -20,7 +20,7 @@ function get_data() {
       }
     },
     error: () => {
-      alert("ajax Error");
+      console.error("ajax Error");
     }
   });
 
