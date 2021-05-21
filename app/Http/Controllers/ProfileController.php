@@ -9,6 +9,7 @@ use App\Models\Like;
 use App\Models\Follow;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notification;
+use Storage;
 
 class ProfileController extends Controller
 {
@@ -81,8 +82,8 @@ class ProfileController extends Controller
             $image = $request->file('image');
     
             if ($image !== null) {
-                $path = $image->store('public/image');
-                $image = basename($path);
+                $path = Storage::disk('s3')->putFile('/', $image, 'public');
+                $image = Storage::disk('s3')->url($path);
             }
     
             User::where('id', $id)->update([

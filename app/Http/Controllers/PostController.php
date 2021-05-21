@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
+use Storage;
 
 class PostController extends Controller
 {
@@ -54,8 +55,8 @@ class PostController extends Controller
         $image = $request->file('image');
 
         if ($image !== null) {
-            $path = $image->store('public/image');
-            $image = basename($path);
+            $path = Storage::disk('s3')->putFile('/', $image, 'public');
+            $image = Storage::disk('s3')->url($path);
         }
 
         Post::create([
@@ -124,8 +125,8 @@ class PostController extends Controller
             $image = $request->file('image');
     
             if ($image !== null) {
-                $path = $image->store('public/image');
-                $image = basename($path);
+                $path = Storage::disk('s3')->putFile('/', $image, 'public');
+                $image = Storage::disk('s3')->url($path);
             }
     
             Post::where('id', $id)->update([

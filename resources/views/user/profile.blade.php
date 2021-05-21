@@ -8,7 +8,7 @@
       @if ($user->image === null)
       <img src="/image/default.png" class="profile-img d-block mx-auto">
       @else
-      <img src="{{ asset('/storage/image/'.$user->image) }}" class="profile-img d-block mx-auto">
+      <img src="{{ $user->image }}" class="profile-img d-block mx-auto">
       @endif
     </div>
     <div class="mx-5 text-md-left text-center">
@@ -72,7 +72,7 @@
             @if ($post->image === null)
             <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
             @else
-            <img src="{{ asset('/storage/image/'.$post->image) }}" class="bd-placeholder-img card-img-top" height="200">
+            <img src="{{ $post->image }}" class="bd-placeholder-img card-img-top" height="200">
             @endif
             <div class="card-body">
               <h5 class="card-title">{{ $post->title }}</h5>
@@ -121,7 +121,7 @@
             @if ($like_post->image === null)
             <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
             @else
-            <img src="{{ asset('/storage/image/'.$like_post->image) }}" class="bd-placeholder-img card-img-top"
+            <img src="{{ $like_post->image }}" class="bd-placeholder-img card-img-top"
               height="200">
             @endif
             <div class="card-body">
@@ -173,7 +173,7 @@
                 @if ($follow_user->image === null)
                 <img src="/image/default.png" class="follow-img">
                 @else
-                <img src="{{ asset('/storage/image/'.$follow_user->image) }}" class="follow-img">
+                <img src="{{ $follow_user->image }}" class="follow-img">
                 @endif
                 <p class="ml-4 follow-name my-auto">
                   <a href="{{ route('profile', ['id' => $follow_user->id]) }}">{{ $follow_user->name }}</a>
@@ -220,7 +220,7 @@
                 @if ($followed_user->image === null)
                 <img src="/image/default.png" class="follow-img">
                 @else
-                <img src="{{ asset('/storage/image/'.$followed_user->image) }}" class="follow-img">
+                <img src="{{ $followed_user->image }}" class="follow-img">
                 @endif
                 <p class="ml-4 follow-name my-auto">
                   <a href="{{ route('profile', ['id' => $followed_user->id]) }}">{{ $followed_user->name }}</a>

@@ -18,7 +18,7 @@
         @if ($post->image === null)
         <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
         @else
-        <img src="{{ asset('/storage/image/'.$post->image) }}" class="bd-placeholder-img card-img-top" height="200">
+        <img src="{{ $post->image }}" class="bd-placeholder-img card-img-top" height="200">
         @endif
         <div class="card-body">
           <h5 class="card-title">{{ $post->title }}</h5>
