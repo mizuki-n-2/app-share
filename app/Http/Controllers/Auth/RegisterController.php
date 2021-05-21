@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Storage;
 
 class RegisterController extends Controller
 {
@@ -73,8 +74,8 @@ class RegisterController extends Controller
         $image = $data['image'];
 
         if ($image !== null) {
-            $path = $image->store('public/image');
-            $image = basename($path);
+            $path = Storage::disk('s3')->putFile('/', $image, 'public');
+            $image = Storage::disk('s3')->url($path);
         }
 
         return User::create([
