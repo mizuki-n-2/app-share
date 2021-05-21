@@ -9,7 +9,7 @@
 
     <div class="col-10 mx-auto">
       @if ($post->image !== null)
-      <img src="{{ asset('/storage/image/'.$post->image) }}" class="show-img">
+      <img src="{{ $post->image }}" class="show-img">
       @else
       <img src="/image/no-img.png" class="show-img">
       @endif
