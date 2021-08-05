@@ -2,6 +2,7 @@
 自分の作ったアプリを共有できるアプリ
 
 [http://ec2-52-69-180-244.ap-northeast-1.compute.amazonaws.com/](http://ec2-52-69-180-244.ap-northeast-1.compute.amazonaws.com/)
+(公開停止中)
 
 ![](public/image/app-share-top.png)
 
