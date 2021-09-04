@@ -31,7 +31,7 @@
     </div>
 
     <div class="form-check mb-3">
-      <input class="form-check-input" type="checkbox" value="checked" id="default" name="default">
+      <input class="form-check-input" type="checkbox" value="checked" id="default" name="default" checked>
       <label class="form-check-label text-primary" for="default">
         画像は変更しない
       </label>
