@@ -15,7 +15,7 @@
 
 <div class="container my-5">
     {{-- アプリ一覧 --}}
-    <h2 class="text-center">投稿一覧</h2>
+    <h2 class="text-center">人気の投稿</h2>
     <div class="row">
         @if ($posts->count() === 0)
         <div class="col-10 mx-auto mt-5 text-center">
