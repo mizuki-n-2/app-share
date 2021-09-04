@@ -5,6 +5,10 @@
 {{-- アプリ一覧 --}}
 <div class="container my-5">
   <h2 class="text-center">投稿一覧</h2>
+  <div class="btn-group" role="group">
+    <a href="{{ route('posts.index', ['orderBy' => 'new']) }}" class="btn btn-primary">新着順</a>
+    <a href="{{ route('posts.index', ['orderBy' => 'popular']) }}" class="btn btn-primary">人気順</a>
+  </div>
   <div class="row">
     @if ($posts->count() === 0)
     <div class="col-10 mx-auto mt-5 text-center">
