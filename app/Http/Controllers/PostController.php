@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
+use App\Models\Like;
 use Storage;
 
 class PostController extends Controller
@@ -19,10 +21,21 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(6);
-        return view('post.index', ['posts' => $posts]);
+        $orderBy = $request->orderBy;
+        
+        if($orderBy == "popular") {
+            $sub_query = Like::select("post_id", DB::raw('count(*) as like_number'))->groupBy('post_id');
+
+            $posts = Post::leftJoin(DB::raw("({$sub_query->toSql()}) AS filtered_likes"),'posts.id', '=', 'filtered_likes.post_id')->orderBy('filtered_likes.like_number', 'desc')->paginate(6);
+        }
+        // TODO: orderByがない時と"new"の時のみにする
+        else {
+            $orderBy = "new";
+            $posts = Post::orderBy('created_at', 'desc')->paginate(6);
+        }
+        return view('post.index', ['posts' => $posts, 'orderBy' => $orderBy]);
     }
 
     /**
