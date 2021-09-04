@@ -129,7 +129,9 @@ class PostController extends Controller
             'default' => 'nullable'
         ]);
 
-        if ($request->default === 'checked') {
+        // TODO: もっといい方法を考える
+        // 現状はチェックの外し忘れが怖いので画像が送られてきた場合は更新を優先
+        if (empty($request->file('image')) && $request->default === 'checked') {
             Post::where('id', $id)->update([
                 'user_id' => Auth::id(),
                 'title' => $request->title,

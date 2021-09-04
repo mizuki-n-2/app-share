@@ -67,13 +67,15 @@ class ProfileController extends Controller
     public function update($id, Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|max:20',
             'image' => 'nullable|file|image',
             'profile' => 'nullable|max:255',
             'default' => 'nullable'
         ]);
 
-        if ($request->default === 'checked') {
+        // TODO: もっといい方法を考える
+        // 現状はチェックの外し忘れが怖いので画像が送られてきた場合は更新を優先
+        if (empty($request->file('image')) && $request->default === 'checked') {
             User::where('id', $id)->update([
                 'name' => $request->name,
                 'profile' => $request->profile

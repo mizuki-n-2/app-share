@@ -3,9 +3,9 @@ $(function () {
   get_data();
 
   $('#default').on('click', function () {
-    $('#image').val(null);
+    if ($(this).prop("checked"))
+      $("#image").val(null);
   });
-  
 });
 
 function get_data() {
@@ -13,8 +13,6 @@ function get_data() {
     url: "/ajax",
     dataType: "json",
     success: data => {
-      // console.log(data);
-
       if (data.notifications.length !== 0) {
         $('#notification-icon').css('color','#FFCC00');
       }
