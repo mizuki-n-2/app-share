@@ -30,11 +30,13 @@ class PostController extends Controller
 
             $posts = Post::leftJoin(DB::raw("({$sub_query->toSql()}) AS filtered_likes"),'posts.id', '=', 'filtered_likes.post_id')->orderBy('filtered_likes.like_number', 'desc')->paginate(6);
         }
-        // TODO: orderByがない時と"new"の時のみにする
-        else {
-            $orderBy = "new";
+        else if($orderBy == "new") {
             $posts = Post::orderBy('created_at', 'desc')->paginate(6);
         }
+        else {
+            return redirect('/posts?orderBy=new');
+        }
+
         return view('post.index', ['posts' => $posts, 'orderBy' => $orderBy]);
     }
 
