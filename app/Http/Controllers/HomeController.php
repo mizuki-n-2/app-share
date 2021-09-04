@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Like;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -18,7 +20,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(6);
+        $sub_query = Like::select("post_id", DB::raw('count(*) as like_number'))->groupBy('post_id');
+
+        $posts = Post::join(DB::raw("({$sub_query->toSql()}) AS filtered_likes"),'posts.id', '=', 'filtered_likes.post_id')->orderBy('filtered_likes.like_number', 'desc')->paginate(6);
+
         return view('home', ['posts' => $posts]);
     }
 }
