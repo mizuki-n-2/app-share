@@ -19,7 +19,7 @@
       @foreach ($notifications as $notification)
       <div class="card">
         <ul class="list-group list-group-flush">
-          @if ($notification->like_post_title === null && $notification->comment_post_title === null)
+          @if (empty($notification->like_post_title) && empty($notification->comment_post_title))
           <li class="list-group-item d-flex align-items-center justify-content-between">
             <span>{{ $notification->by_user_name }}にフォローされました</span>
             <form action="{{ route('notification.delete', ['id' => $notification->id]) }}" method="POST">

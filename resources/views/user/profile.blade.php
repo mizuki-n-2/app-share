@@ -5,7 +5,7 @@
   {{-- ユーザー情報 --}}
   <div class="d-md-flex justify-content-center align-items-center">
     <div class="mx-5">
-      @if ($user->image === null)
+      @if (empty($user->image))
       <img src="/image/default.png" class="profile-img d-block mx-auto">
       @else
       <img src="{{ $user->image }}" class="profile-img d-block mx-auto">
@@ -69,7 +69,7 @@
 
           {{-- カード --}}
           <div class="card mt-5">
-            @if ($post->image === null)
+            @if (empty($post->image))
             <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
             @else
             <img src="{{ $post->image }}" class="bd-placeholder-img card-img-top" height="200">
@@ -118,7 +118,7 @@
 
           {{-- カード --}}
           <div class="card mt-5">
-            @if ($like_post->image === null)
+            @if (empty($like_post->image))
             <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
             @else
             <img src="{{ $like_post->image }}" class="bd-placeholder-img card-img-top"
@@ -170,7 +170,7 @@
           <div class="card">
             <div class="card-body d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center">
-                @if ($follow_user->image === null)
+                @if (empty($follow_user->image))
                 <img src="/image/default.png" class="follow-img">
                 @else
                 <img src="{{ $follow_user->image }}" class="follow-img">
@@ -217,7 +217,7 @@
           <div class="card">
             <div class="card-body d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center">
-                @if ($followed_user->image === null)
+                @if (empty($followed_user->image))
                 <img src="/image/default.png" class="follow-img">
                 @else
                 <img src="{{ $followed_user->image }}" class="follow-img">
