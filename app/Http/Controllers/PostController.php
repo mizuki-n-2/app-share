@@ -37,6 +37,8 @@ class PostController extends Controller
             return redirect('/posts?orderBy=new');
         }
 
+        $posts->appends(['orderBy' => $orderBy]);
+        
         return view('post.index', ['posts' => $posts, 'orderBy' => $orderBy]);
     }
 
