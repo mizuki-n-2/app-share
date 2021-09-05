@@ -28,7 +28,7 @@
               <button type="submit" class="btn btn-primary">OK</button>
             </form>
           </li>
-          @elseif($notification->like_post_title !== null)
+          @elseif(!empty($notification->like_post_title))
           <li class="list-group-item d-flex align-items-center justify-content-between">
             <span>{{ $notification->by_user_name }}が{{ $notification->like_post_title }}にいいねしました</span>
             <form action="{{ route('notification.delete', ['id' => $notification->id]) }}" method="POST">

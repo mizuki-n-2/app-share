@@ -8,10 +8,10 @@
   <div class="row">
 
     <div class="col-10 mx-auto">
-      @if ($post->image !== null)
-      <img src="{{ $post->image }}" class="show-img">
-      @else
+      @if (empty($post->image))
       <img src="/image/no-img.png" class="show-img">
+      @else
+      <img src="{{ $post->image }}" class="show-img">
       @endif
     </div>
 
@@ -27,10 +27,10 @@
 
     <div class="col-10 mx-auto">
       <h5>○URL</h5>
-      @if ($post->url !== null)
-      <p class="ml-4"><a href="{{ $post->url }}">{{ $post->url }}</a></p>
-      @else
+      @if (empty($post->url))
       <p class="ml-4">URLはありません</p>
+      @else
+      <p class="ml-4"><a href="{{ $post->url }}">{{ $post->url }}</a></p>
       @endif
     </div>
 
