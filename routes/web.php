@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
-Auth::routes();
+Auth::routes(['confirm' => false]);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
