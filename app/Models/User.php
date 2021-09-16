@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\PasswordResetNotification;
 
 class User extends Authenticatable
 {
@@ -83,5 +84,16 @@ class User extends Authenticatable
         } else {
             return false;
         }
+    }
+
+    /**
+     * パスワードリセット通知をユーザーに送信
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new PasswordResetNotification($token));
     }
 }
