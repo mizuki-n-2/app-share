@@ -19,7 +19,7 @@
     @foreach ($posts as $post)
     <div class="col-lg-4 col-md-6">
       <div class="card my-4">
-        @if ($post->image === null)
+        @if (empty($post->image))
         <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
         @else
         <img src="{{ $post->image }}" class="bd-placeholder-img card-img-top" height="200">

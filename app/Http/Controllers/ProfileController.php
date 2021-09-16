@@ -83,7 +83,7 @@ class ProfileController extends Controller
         } else {
             $image = $request->file('image');
     
-            if ($image !== null) {
+            if (isset($image)) {
                 $path = Storage::disk('s3')->putFile('/', $image, 'public');
                 $image = Storage::disk('s3')->url($path);
             }

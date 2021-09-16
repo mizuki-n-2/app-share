@@ -71,7 +71,7 @@ class PostController extends Controller
 
         $image = $request->file('image');
 
-        if ($image !== null) {
+        if (isset($image)) {
             $path = Storage::disk('s3')->putFile('/', $image, 'public');
             $image = Storage::disk('s3')->url($path);
         }
@@ -143,7 +143,7 @@ class PostController extends Controller
         } else {
             $image = $request->file('image');
     
-            if ($image !== null) {
+            if (isset($image)) {
                 $path = Storage::disk('s3')->putFile('/', $image, 'public');
                 $image = Storage::disk('s3')->url($path);
             }
@@ -172,10 +172,10 @@ class PostController extends Controller
     {
         $post = Post::where('id', $id)->first();
         $post->delete();
-        if ($post->likes !== null) {
+        if (isset($post->likes)) {
             $post->likes()->delete();
         }
-        if ($post->comments !== null) {
+        if (isset($post->comments)) {
             $post->comments()->delete();
         }
 
