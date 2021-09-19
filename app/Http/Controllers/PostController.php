@@ -24,14 +24,23 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $orderBy = $request->orderBy;
+
+        $returnPosts = [
+            'posts.id',
+            'posts.user_id',
+            'posts.image',
+            'posts.title',
+            'users.name AS user_name',
+            'users.image AS user_image'
+        ];
         
         if($orderBy == "popular") {
             $sub_query = Like::select("post_id", DB::raw('count(*) as like_number'))->groupBy('post_id');
 
-            $posts = Post::leftJoin(DB::raw("({$sub_query->toSql()}) AS filtered_likes"),'posts.id', '=', 'filtered_likes.post_id')->orderBy('filtered_likes.like_number', 'desc')->paginate(6);
+            $posts = Post::select($returnPosts)->leftJoin(DB::raw("({$sub_query->toSql()}) AS filtered_likes"),'posts.id', '=', 'filtered_likes.post_id')->leftJoin('users', 'posts.user_id', '=', 'users.id')->orderBy('filtered_likes.like_number', 'desc')->paginate(6);
         }
         else if($orderBy == "new") {
-            $posts = Post::orderBy('created_at', 'desc')->paginate(6);
+            $posts = Post::select($returnPosts)->leftJoin('users', 'posts.user_id', '=', 'users.id')->orderBy('posts.created_at', 'desc')->paginate(6);
         }
         else {
             return redirect('/posts?orderBy=new');
