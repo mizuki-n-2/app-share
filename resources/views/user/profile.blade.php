@@ -68,14 +68,24 @@
         <div class="col-lg-4 col-md-6">
 
           {{-- カード --}}
-          <div class="card mt-5">
+          <div class="card mt-5 shadow bg-white">
+            <div class="px-2 py-1 shadow-sm bg-white">
+              @if (empty($post->user_image))
+              <img src="/image/default.png" class="rounded-circle" style="width: 2rem;">
+              @else
+              <img src="{{ $post->user_image }}" class="rounded-circle" style="width: 2rem;">
+              @endif
+              <a href="{{ route('profile', ['id' => $post->user_id]) }}">{{ $post->user_name }}</a>
+            </div>
+
             @if (empty($post->image))
             <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
             @else
             <img src="{{ $post->image }}" class="bd-placeholder-img card-img-top" height="200">
             @endif
             <div class="card-body">
-              <h5 class="card-title">{{ $post->title }}</h5>
+              <h5 class="card-title font-weight-bold text-center">{{ $post->title }}</h5>
+
               <div class="d-flex justify-content-between">
 
                 {{-- 詳細 --}}
@@ -117,7 +127,16 @@
         <div class="col-lg-4 col-md-6">
 
           {{-- カード --}}
-          <div class="card mt-5">
+          <div class="card mt-5 shadow bg-white">
+            <div class="px-2 py-1 shadow-sm bg-white">
+              @if (empty($like_post->user_image))
+              <img src="/image/default.png" class="rounded-circle" style="width: 2rem;">
+              @else
+              <img src="{{ $like_post->user_image }}" class="rounded-circle" style="width: 2rem;">
+              @endif
+              <a href="{{ route('profile', ['id' => $like_post->user_id]) }}">{{ $like_post->user_name }}</a>
+            </div>
+
             @if (empty($like_post->image))
             <img src="/image/no-img.png" class="bd-placeholder-img card-img-top" height="200">
             @else
@@ -125,7 +144,8 @@
               height="200">
             @endif
             <div class="card-body">
-              <h5 class="card-title">{{ $like_post->title }}</h5>
+              <h5 class="card-title font-weight-bold text-center">{{ $like_post->title }}</h5>
+
               <div class="d-flex justify-content-between">
 
                 {{-- 詳細 --}}

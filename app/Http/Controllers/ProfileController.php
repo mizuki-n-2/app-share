@@ -9,6 +9,7 @@ use App\Models\Like;
 use App\Models\Follow;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notification;
+use Illuminate\Support\Facades\DB;
 use Storage;
 
 class ProfileController extends Controller
@@ -24,14 +25,19 @@ class ProfileController extends Controller
         $user = User::where('id', $id)->first();
 
         // 投稿
-        $posts = Post::where('user_id', $id)->orderBy('created_at', 'desc')->get();
+        $returnPosts = [
+            'posts.id',
+            'posts.user_id',
+            'posts.image',
+            'posts.title',
+            'users.name AS user_name',
+            'users.image AS user_image'
+        ];
+
+        $posts = Post::select($returnPosts)->leftJoin('users', 'posts.user_id', '=', 'users.id')->where('posts.user_id', $id)->orderBy('posts.created_at', 'desc')->get();
 
         // いいねした投稿
-        $likes = Like::where('user_id', $id)->orderBy('created_at', 'desc')->get();
-        $like_posts = array();
-        foreach($likes as $like) {
-            array_push($like_posts, $like->post);
-        }
+        $like_posts = Post::select($returnPosts)->join(DB::raw("(SELECT * FROM likes WHERE user_id = $id) AS filtered_likes"),'posts.id', '=', 'filtered_likes.post_id')->leftJoin('users', 'posts.user_id', '=', 'users.id')->orderBy('filtered_likes.created_at', 'desc')->get();
 
         // フォロー
         $follows = Follow::where('user_id', $id)->orderBy('created_at', 'desc')->get();
