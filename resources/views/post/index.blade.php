@@ -25,7 +25,7 @@
         <img src="{{ $post->image }}" class="bd-placeholder-img card-img-top" height="200">
         @endif
         <div class="card-body">
-          <h5 class="card-title">{{ $post->title }}</h5>
+          <h5 class="card-title font-weight-bold">{{ $post->title }}</h5>
           <div class="d-flex justify-content-between">
             {{-- 詳細 --}}
             <a href="{{ route('posts.show',['post' => $post->id]) }}" class="btn btn-outline-info">詳細へ</a>
